@@ -1,22 +1,24 @@
 import React, { Component } from "react";
 
 import {Button, Table, Tooltip} from 'antd'
+import {connect} from 'react-redux'
 import {PlusOutlined, FormOutlined, DeleteOutlined} from '@ant-design/icons'
+
+import {getSubjectList, getSubjectListChild} from './redux'
 import "./index.less"
 
 const columns = [
-  { title: '分类名称', dataIndex: 'name', key: 'name' },
+  { title: '分类名称', dataIndex: 'title', key: 'title' },
   {
     title: '操作',
     width: 270,
-    dataIndex: '',
-    key: 'x',
+    key: 'handle',
     render: () => (
       <>
-        <Tooltip placement="top" title={"编辑"}>
+        <Tooltip placement="top" title={"更新课程"}>
           <Button type={"primary"} size={"large"} style={{width: 50, height: 36, fontSize: 16, marginRight: 20}} icon={<FormOutlined />}/>
         </Tooltip>
-        <Tooltip placement="top" title={"删除"}>
+        <Tooltip placement="top" title={"删除课程"}>
           <Button type={"danger"} size={"large"} style={{width: 50, height: 36, fontSize: 16,}} icon={<DeleteOutlined />}/>
         </Tooltip>
       </>
@@ -24,39 +26,30 @@ const columns = [
   },
 ];
 
-const data = [
-  {
-    key: 1,
-    name: 'John Brown',
-    age: 32,
-    address: 'New York No. 1 Lake Park',
-    description: 'My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.',
-  },
-  {
-    key: 2,
-    name: 'Jim Green',
-    age: 42,
-    address: 'London No. 1 Lake Park',
-    description: 'My name is Jim Green, I am 42 years old, living in London No. 1 Lake Park.',
-  },
-  {
-    key: 3,
-    name: 'Not Expandable',
-    age: 29,
-    address: 'Jiangsu No. 1 Lake Park',
-    description: 'This not expandable',
-  },
-  {
-    key: 4,
-    name: 'Joe Black',
-    age: 32,
-    address: 'Sidney No. 1 Lake Park',
-    description: 'My name is Joe Black, I am 32 years old, living in Sidney No. 1 Lake Park.',
-  },
-];
+@connect(state => ({subjectList: state.subjectList}), {getSubjectList, getSubjectListChild})
+class Subject extends Component {
+  componentDidMount() {
+    this.props.getSubjectList(1, 3)
+  }
+  //处理页码跳转
+  handleChange = (page, pageSize) => {
+    this.props.getSubjectList(page, pageSize)
+  }
+  // 处理页数跳转
+  handleShowSizeChange = (page, pageSize) => {
+    page = 1
+    this.props.getSubjectList(page, pageSize)
+  }
+  // 点击展开或者关闭时触发
+  handleExpand = (expanded, record) => {
+    if(expanded) {
+      this.props.getSubjectListChild(record._id)
+    }
+  }
 
-export default class Subject extends Component {
   render() {
+    const {items, total} = this.props.subjectList
+
     return (
       <div style={{background: "#fff"}}>
         <div>
@@ -66,13 +59,24 @@ export default class Subject extends Component {
           <Table
             columns={columns}
             expandable={{
-              expandedRowRender: record => <p style={{ margin: 0 }}>{record.description}</p>,
-              rowExpandable: record => record.name !== 'Not Expandable',
+              onExpand: this.handleExpand
             }}
-            dataSource={data}
+            dataSource={items}
+            rowKey={'_id'}
+            pagination={{
+              total,
+              defaultPageSize: 3,
+              pageSizeOptions: ['3', '5', '10', '15'],
+              showSizeChanger: true,
+              showQuickJumper: true,
+              onChange: this.handleChange,
+              onShowSizeChange: this.handleShowSizeChange
+            }}
           />
         </div>
       </div>
     )
   }
 }
+
+export default Subject
