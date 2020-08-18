@@ -1,6 +1,7 @@
 import {
   GET_SUBJECT_LIST,
-  GET_SUBJECT_LIST_CHILD
+  GET_SUBJECT_LIST_CHILD,
+  UPDATE_SUBJECT
 } from "./constants";
 
 const initSubjectList = {
@@ -14,7 +15,9 @@ export default function subjectList(prevState = initSubjectList, action) {
       action.data.items.forEach(item => {
         item.children = []
       })
-      return action.data;
+      return {
+        ...action.data
+      };
     case GET_SUBJECT_LIST_CHILD:
       const items = prevState.items,
         itemsChild = action.data.items
@@ -26,6 +29,26 @@ export default function subjectList(prevState = initSubjectList, action) {
       })
       return {
         ...prevState,
+      }
+    case UPDATE_SUBJECT:
+      const {title, id} = action.data
+      prevState.items.forEach(item => {
+        if(item._id === id) {
+          item.title = title
+          return void 0
+        }
+
+        const items = item.children
+        items.forEach(item => {
+          if(item._id === id) {
+            item.title = title
+            return void 0
+          }
+        })
+      })
+
+      return {
+        ...prevState
       }
     default:
       return prevState;

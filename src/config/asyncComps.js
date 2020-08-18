@@ -20,6 +20,8 @@ const Comment = () => lazy(() => import("@pages/Edu/Comment"));
 const Course = () => lazy(() => import("@pages/Edu/Course"));
 const Teacher = () => lazy(() => import("@pages/Edu/Teacher"));
 const Subject = () => lazy(() => import("@pages/Edu/Subject"));
+// const AddSubject = () => lazy(() => import("@pages/Edu/Subject/AddSubject")); // 类组件
+const AddSubject = () => lazy(() => import("@pages/Edu/Subject/AddSubjectHook")); // 函数组件HOOKS
 const Settings = () => lazy(() => import("@pages/User/Settings"));
 const Center = () => lazy(() => import("@pages/User/Center"));
 
@@ -37,6 +39,7 @@ export default {
   Course,
   Teacher,
   Subject,
+  AddSubject,
   Settings,
   Center,
 };

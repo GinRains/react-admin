@@ -1,11 +1,6 @@
-import subjectList from "./reducers";
-import {
-  getSubjectList,
-  getSubjectListChild
-} from "./actions";
-
+export {default as subjectList} from "./reducers";
 export {
   getSubjectList,
   getSubjectListChild,
-  subjectList
-};
+  updateSubject
+} from "./actions";
