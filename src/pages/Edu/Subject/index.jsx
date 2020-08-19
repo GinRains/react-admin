@@ -4,11 +4,10 @@ import {Button, Input, Table, Tooltip, message, Modal} from 'antd'
 import {connect} from 'react-redux'
 import {PlusOutlined, FormOutlined, DeleteOutlined, ExclamationCircleOutlined} from '@ant-design/icons'
 
-import {getSubjectList, getSubjectListChild, updateSubject} from './redux'
-import {reqDeleteSubject} from '@api/edu/subject'
+import {getSubjectList, getSubjectListChild, updateSubject, deleteSubject} from './redux'
 import "./index.less"
 
-@connect(state => ({subjectList: state.subjectList}), {getSubjectList, getSubjectListChild, updateSubject})
+@connect(state => ({subjectList: state.subjectList}), {getSubjectList, getSubjectListChild, updateSubject, deleteSubject})
 class Subject extends Component {
   constructor(props) {
     super(props);
@@ -85,19 +84,21 @@ class Subject extends Component {
   // 删除课程
   handleDelete = record => () => {
     const {confirm} = Modal
+    const {deleteSubject} = this.props
 
     confirm({
       title: `此操作将永久删除${record.title}课程，是否继续?`,
       icon: <ExclamationCircleOutlined />,
-      content: 'Some descriptions',
+      content: '危险操作!',
       okText: 'Yes',
       okType: 'danger',
       cancelText: 'No',
       async onOk() {
         // 优化用户体验
-        // const res = await reqDeleteSubject(record._id)
-        // console.log(res)
-        // this.props.getSubjectList(1, 3)
+        const res = await deleteSubject(record._id)
+        if(res.code === 200) {
+          message.success(`已删除${record.title}课程`)
+        }
       },
       onCancel() {
         message.success("已取消操作")

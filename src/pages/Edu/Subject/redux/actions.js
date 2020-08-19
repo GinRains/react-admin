@@ -1,7 +1,8 @@
 import {
   reqGetSubject,
   reqGetSubjectChild,
-  reqUpdateSubject
+  reqUpdateSubject,
+  reqDeleteSubject
 } from "@api/edu/subject";
 
 import {
@@ -62,10 +63,10 @@ const deleteSubjectSync = data => ({
   data
 })
 
-export const deleteSubject = (id, title) => {
+export const deleteSubject = (id) => {
   return dispatch => {
-    return reqUpdateSubject(id, title).then(response => {
-      dispatch(updateSubjectSync({id, title}))
+    return reqDeleteSubject(id).then(response => {
+      dispatch(deleteSubjectSync(id))
       return {code: 200}
     })
   }
