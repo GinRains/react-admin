@@ -15,18 +15,21 @@ class Subject extends Component {
       currentId: '',
       title: ''
     }
+    this.page = 1
+    this.limit = 3
   }
 
   componentDidMount() {
-    this.props.getSubjectList(1, 3)
+    this.props.getSubjectList(this.page, this.limit)
   }
   //处理页码跳转
   handleChange = (page, pageSize) => {
+    this.page = page
     this.props.getSubjectList(page, pageSize)
   }
   // 处理页数跳转
   handleShowSizeChange = (page, pageSize) => {
-    page = 1
+    this.page = page
     this.props.getSubjectList(page, pageSize)
   }
   // 点击展开或者关闭时触发
@@ -84,7 +87,7 @@ class Subject extends Component {
   // 删除课程
   handleDelete = record => () => {
     const {confirm} = Modal
-    const {deleteSubject} = this.props
+    const {deleteSubject, getSubjectList} = this.props
 
     confirm({
       title: `此操作将永久删除${record.title}课程，是否继续?`,
@@ -93,11 +96,19 @@ class Subject extends Component {
       okText: 'Yes',
       okType: 'danger',
       cancelText: 'No',
-      async onOk() {
+      onOk: async() => {
         // 优化用户体验
         const res = await deleteSubject(record._id)
         if(res.code === 200) {
+          const {subjectList} = this.props
           message.success(`已删除${record.title}课程`)
+
+          // 优化删除逻辑
+          record.parentId === "0" && getSubjectList(this.page, this.limit)
+          if(subjectList.items.length <= 0 && record.parentId === "0" && this.page > 1) {
+            getSubjectList(--this.page, this.limit)
+            return void 0
+          }
         }
       },
       onCancel() {
@@ -165,7 +176,9 @@ class Subject extends Component {
             rowKey={'_id'}
             pagination={{
               total,
-              defaultPageSize: 3,
+              current: this.page,
+              defaultCurrent: 1,
+              defaultPageSize: this.limit,
               pageSizeOptions: ['3', '5', '10', '15'],
               showSizeChanger: true,
               showQuickJumper: true,

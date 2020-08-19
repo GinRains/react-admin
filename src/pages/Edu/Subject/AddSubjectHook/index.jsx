@@ -83,7 +83,7 @@ export default function AddSubject(props) {
               message: '请输入课程分类!'
             }
           ]}>
-          <Input />
+          <Input autoFocus={true} />
         </Form.Item>
 
         <Form.Item

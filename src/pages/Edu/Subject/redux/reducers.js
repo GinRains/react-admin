@@ -60,7 +60,7 @@ export default function subjectList(prevState = initSubjectList, action) {
         }
 
         const items = item.children
-        items.forEach(item => {
+        items.forEach((item, index) => {
           if(item._id === action.data) {
             items.splice(index, 1)
             return void 0
