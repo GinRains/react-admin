@@ -76,7 +76,7 @@ class AddSubject extends Component {
                 message: '请输入课程分类!'
               }
             ]}>
-            <Input />
+            <Input autoFocus={true} />
           </Form.Item>
 
           <Form.Item

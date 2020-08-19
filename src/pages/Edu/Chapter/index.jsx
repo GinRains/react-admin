@@ -16,19 +16,16 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import { connect } from "react-redux";
 import SearchForm from "./SearchForm";
 
+import {getLessonInfo} from './redux'
 import "./index.less";
 
 dayjs.extend(relativeTime);
 
 @connect(
   (state) => ({
-    // courseList: state.courseList
-    // permissionValueList: filterPermissions(
-    //   state.course.permissionValueList,
-    //   "Course"
-    // )
-  })
-  // { getcourseList }
+    chapterList: state.chapter.chapterInfo.items
+  }),
+  { getLessonInfo }
 )
 class Chapter extends Component {
   state = {
@@ -89,6 +86,10 @@ class Chapter extends Component {
       selectedRowKeys,
     });
   };
+  // 展开时获取课时列表
+  handleExpand = (isExpanded, record) => {
+    isExpanded && this.props.getLessonInfo(record._id)
+  }
 
   render() {
     const { previewVisible, previewImage, selectedRowKeys } = this.state;
@@ -106,6 +107,13 @@ class Chapter extends Component {
         },
       },
       {
+        title: "视频",
+        dataIndex: "free",
+        render: (isFree) => {
+          return isFree ? (<Button>预览视频</Button>) : ""
+        },
+      },
+      {
         title: "操作",
         width: 300,
         fixed: "right",
@@ -113,9 +121,9 @@ class Chapter extends Component {
           if ("free" in data) {
             return (
               <div>
-                <Tooltip title="查看详情">
-                  <Button>
-                    <SettingOutlined />
+                <Tooltip title="新增章节">
+                  <Button type={"primary"}>
+                    <PlusOutlined />
                   </Button>
                 </Tooltip>
                 <Tooltip title="更新章节">
@@ -132,81 +140,6 @@ class Chapter extends Component {
             );
           }
         },
-      },
-    ];
-
-    const data = [
-      {
-        id: "111",
-        title: "第一章节",
-        children: [
-          {
-            id: "1",
-            title: "第一课时",
-            free: false,
-            videoSourceId: "756cf06db9cb4f30be85a9758b19c645",
-          },
-          {
-            id: "2",
-            title: "第二课时",
-            free: true,
-            videoSourceId: "2a02d726622f4c7089d44cb993c531e1",
-          },
-          {
-            id: "3",
-            title: "第三课时",
-            free: true,
-            videoSourceId: "4e560c892fdf4fa2b42e0671aa42fa9d",
-          },
-        ],
-      },
-      {
-        id: "222",
-        title: "第二章节",
-        children: [
-          {
-            id: "4",
-            title: "第一课时",
-            free: false,
-            videoSourceId: "756cf06db9cb4f30be85a9758b19c645",
-          },
-          {
-            id: "5",
-            title: "第二课时",
-            free: true,
-            videoSourceId: "2a02d726622f4c7089d44cb993c531e1",
-          },
-          {
-            id: "6",
-            title: "第三课时",
-            free: true,
-            videoSourceId: "4e560c892fdf4fa2b42e0671aa42fa9d",
-          },
-        ],
-      },
-      {
-        id: "333",
-        title: "第三章节",
-        children: [
-          {
-            id: "1192252824606289921",
-            title: "第一课时",
-            free: false,
-            videoSourceId: "756cf06db9cb4f30be85a9758b19c645",
-          },
-          {
-            id: "1192628092797730818",
-            title: "第二课时",
-            free: true,
-            videoSourceId: "2a02d726622f4c7089d44cb993c531e1",
-          },
-          {
-            id: "1192632495013380097",
-            title: "第三课时",
-            free: true,
-            videoSourceId: "4e560c892fdf4fa2b42e0671aa42fa9d",
-          },
-        ],
       },
     ];
 
@@ -290,9 +223,11 @@ class Chapter extends Component {
           <Table
             rowSelection={rowSelection}
             columns={columns}
-            dataSource={data}
-            rowKey="id"
-          />
+            expandable={{
+              onExpand: this.handleExpand
+            }}
+            dataSource={this.props.chapterList}
+            rowKey="_id"/>
         </div>
 
         <Modal
