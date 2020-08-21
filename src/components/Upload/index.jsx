@@ -32,6 +32,7 @@ class CustomUpload extends Component {
       }
       const res = await reqGetUploadToken()
       res.expireTime = Date.now() + (res.expires - 300) * 1000
+      this.videoToken = res // 第一次需存入组件实例
       localStorage.setItem("VIDEO_TOKEN_KEY", JSON.stringify(res))
       resolve()
     })
