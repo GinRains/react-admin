@@ -8,7 +8,7 @@ const layout = {
   // antd把一个宽度分为24份
   // 表单文字描述部分
   labelCol: {
-    span: 3
+    span: 2
   },
   // 表单项部分
   wrapperCol: {

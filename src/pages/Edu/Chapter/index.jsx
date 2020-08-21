@@ -90,6 +90,9 @@ class Chapter extends Component {
   handleExpand = (isExpanded, record) => {
     isExpanded && this.props.getLessonInfo(record._id)
   }
+  handleAddLesson = data => () => {
+    this.props.history.push("/edu/chapter/addlesson", data._id)
+  }
 
   render() {
     const { previewVisible, previewImage, selectedRowKeys } = this.state;
@@ -118,27 +121,25 @@ class Chapter extends Component {
         width: 300,
         fixed: "right",
         render: (data) => {
-          if ("free" in data) {
-            return (
-              <div>
-                <Tooltip title="新增章节">
-                  <Button type={"primary"}>
-                    <PlusOutlined />
-                  </Button>
-                </Tooltip>
-                <Tooltip title="更新章节">
-                  <Button type="primary" style={{ margin: "0 10px" }}>
-                    <FormOutlined />
-                  </Button>
-                </Tooltip>
-                <Tooltip title="删除章节">
-                  <Button type="danger">
-                    <DeleteOutlined />
-                  </Button>
-                </Tooltip>
-              </div>
-            );
-          }
+          return (
+            <div>
+              <Tooltip title="新增课时">
+                <Button type={"primary"} onClick={this.handleAddLesson(data)}>
+                  <PlusOutlined />
+                </Button>
+              </Tooltip>
+              <Tooltip title="更新课时">
+                <Button type="primary" style={{ margin: "0 10px" }}>
+                  <FormOutlined />
+                </Button>
+              </Tooltip>
+              <Tooltip title="删除课时">
+                <Button type="danger">
+                  <DeleteOutlined />
+                </Button>
+              </Tooltip>
+            </div>
+          );
         },
       },
     ];
