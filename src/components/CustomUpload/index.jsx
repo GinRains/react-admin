@@ -44,8 +44,8 @@ class CustomUpload extends Component {
         onError(err)
       },
       complete: (res) => {
-        this.props.onChange(`http://qfeie8vm8.hn-bkt.clouddn.com/${res.key}`)
         onSuccess(res)
+        this.props.onChange(`http://qfeie8vm8.hn-bkt.clouddn.com/${res.key}`)
       }
     }
     const key = nanoid(10)

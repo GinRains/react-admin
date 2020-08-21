@@ -17,10 +17,8 @@ const layout = {
   }
 }
 class AddLesson extends Component {
-
-
-  onFinish = async (values) => {
-    const chapterId = this.props.location.state._id
+  onFinish = (values) => {
+    const chapterId = this.props.location.state
     const data = {
       ...values,
       chapterId
