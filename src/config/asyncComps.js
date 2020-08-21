@@ -16,6 +16,7 @@ const AssignRole = () =>
 const AddOrUpdateRole = () =>
   lazy(() => import("@pages/Acl/Role/components/AddOrUpdateRole"));
 const Chapter = () => lazy(() => import("@pages/Edu/Chapter"));
+const AddLesson = () => lazy(() => import("@pages/Edu/Chapter/AddLesson"));
 const Comment = () => lazy(() => import("@pages/Edu/Comment"));
 const Course = () => lazy(() => import("@pages/Edu/Course"));
 const Teacher = () => lazy(() => import("@pages/Edu/Teacher"));
@@ -35,6 +36,7 @@ export default {
   AssignRole,
   AddOrUpdateRole,
   Chapter,
+  AddLesson,
   Comment,
   Course,
   Teacher,

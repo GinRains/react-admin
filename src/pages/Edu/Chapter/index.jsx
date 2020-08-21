@@ -90,6 +90,10 @@ class Chapter extends Component {
   handleExpand = (isExpand, record) => {
     isExpand && this.props.getLessonInfo(record._id)
   }
+  // 跳转新增课时页面
+  jumpAddLesson = data => () => {
+    this.props.history.push("/edu/chapter/addlesson", data._id)
+  }
 
   render() {
     const { previewVisible, previewImage, selectedRowKeys } = this.state,
@@ -122,16 +126,16 @@ class Chapter extends Component {
           return (
             <div>
               <Tooltip title="新增课时">
-                <Button type={"primary"}>
+                <Button type={"primary"} onClick={this.jumpAddLesson(data)}>
                   <PlusOutlined />
                 </Button>
               </Tooltip>
-              <Tooltip title="更新章节">
+              <Tooltip title="更新课时">
                 <Button type="primary" style={{ margin: "0 10px" }}>
                   <FormOutlined />
                 </Button>
               </Tooltip>
-              <Tooltip title="删除章节">
+              <Tooltip title="删除课时">
                 <Button type="danger">
                   <DeleteOutlined />
                 </Button>

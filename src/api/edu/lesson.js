@@ -9,3 +9,23 @@ export function reqGetLessonList(chapterId) {
     method: "GET"
   });
 }
+
+export function reqGetUploadToken() {
+  return request({
+    url: "/uploadtoken",
+    method: "GET"
+  })
+}
+
+export function reqAddLesson({chapterId, title, free, video}) {
+  return request({
+    url: `${BASE_URL}/save`,
+    method: "POST",
+    data: {
+      chapterId,
+      title,
+      free,
+      video
+    }
+  })
+}

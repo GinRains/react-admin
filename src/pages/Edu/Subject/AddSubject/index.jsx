@@ -65,8 +65,7 @@ class AddSubject extends Component {
           {...layout}
           name='subject'
           onFinish={this.onFinish}
-          onFinishFailed={this.onFinishFailed}
-        >
+          onFinishFailed={this.onFinishFailed}>
           <Form.Item
             label='课程分类名称'
             name='subjectname'
