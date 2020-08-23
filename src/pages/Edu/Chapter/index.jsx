@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Player from 'griffith'
 import { Button, message, Tooltip, Modal, Alert, Table } from "antd";
 import {
   FullscreenOutlined,
@@ -15,7 +16,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 
 import { connect } from "react-redux";
 import SearchForm from "./SearchForm";
-import {getLessonInfo} from './redux'
+import {getLessonInfo, DelMoreChapter, DelMoreLesson} from './redux'
 
 import "./index.less";
 
@@ -25,15 +26,20 @@ dayjs.extend(relativeTime);
   (state) => ({
     chapterInfo: state.chapter.chapterInfo
   }),
-  { getLessonInfo }
+  { getLessonInfo, DelMoreChapter, DelMoreLesson }
 )
 class Chapter extends Component {
-  state = {
-    searchLoading: false,
-    previewVisible: false,
-    previewImage: "",
-    selectedRowKeys: [],
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      searchLoading: false,
+      previewVisible: false,
+      previewImage: "",
+      selectedRowKeys: [],
+      play_url: ""
+    };
+  }
+
 
   showImgModal = (img) => {
     return () => {
@@ -80,7 +86,7 @@ class Chapter extends Component {
         message.success("获取用户列表数据成功");
       });
   };
-
+  // 表格多选框处理
   onSelectChange = (selectedRowKeys) => {
     this.setState({
       selectedRowKeys,
@@ -94,12 +100,37 @@ class Chapter extends Component {
   jumpAddLesson = data => () => {
     this.props.history.push("/edu/chapter/addlesson", data._id)
   }
+  // 视频预览
+  handlePreview = video => () => {
+    this.setState({
+      previewVisible: true,
+      play_url: video
+    })
+  }
+  // 批量删除
+  delMore = async () => {
+    const selectedRowKeys = this.state.selectedRowKeys
+    const chapterList = this.props.chapterInfo.items
+    const chapterIdList = []
+
+    chapterList.forEach(item => {
+      if(selectedRowKeys.includes(item._id)) {
+        chapterIdList.push(item._id)
+      }
+    })
+    const lessonIdList = selectedRowKeys.filter(item => !chapterIdList.includes(item))
+
+    const res_1 = await this.props.DelMoreChapter(chapterIdList)
+    const res_2 = await this.props.DelMoreLesson(lessonIdList)
+    if(res_1.code === 200 && res_2.code === 200) {
+      message.success("批量删除成功")
+    }
+  }
 
   render() {
     const { previewVisible, previewImage, selectedRowKeys } = this.state,
-      {items} = this.props.chapterInfo
-
-    const columns = [
+      {items} = this.props.chapterInfo,
+      columns = [
       {
         title: "章节名称",
         dataIndex: "title",
@@ -113,9 +144,8 @@ class Chapter extends Component {
       },
       {
         title: "预览",
-        dataIndex: "free",
-        render: (isFree) => {
-          return isFree ? <Button>视频预览</Button> : ""
+        render: (record) => {
+          return record.free ? <Button onClick={this.handlePreview(record.video)}>视频预览</Button> : ""
         },
       },
       {
@@ -144,44 +174,21 @@ class Chapter extends Component {
           );
         },
       },
-    ];
-
-    const rowSelection = {
-      selectedRowKeys,
-      onChange: this.onSelectChange,
-      // hideDefaultSelections: true,
-      // selections: [
-      //   Table.SELECTION_ALL,
-      //   Table.SELECTION_INVERT,
-      //   {
-      //     key: "odd",
-      //     text: "Select Odd Row",
-      //     onSelect: changableRowKeys => {
-      //       let newSelectedRowKeys = [];
-      //       newSelectedRowKeys = changableRowKeys.filter((key, index) => {
-      //         if (index % 2 !== 0) {
-      //           return false;
-      //         }
-      //         return true;
-      //       });
-      //       this.setState({ selectedRowKeys: newSelectedRowKeys });
-      //     }
-      //   },
-      //   {
-      //     key: "even",
-      //     text: "Select Even Row",
-      //     onSelect: changableRowKeys => {
-      //       let newSelectedRowKeys = [];
-      //       newSelectedRowKeys = changableRowKeys.filter((key, index) => {
-      //         if (index % 2 !== 0) {
-      //           return true;
-      //         }
-      //         return false;
-      //       });
-      //       this.setState({ selectedRowKeys: newSelectedRowKeys });
-      //     }
-      //   }
-      // ]
+    ],
+      sources = {
+        hd: {
+          play_url: this.state.play_url,
+          bitrate: 1,
+          duration: 1000,
+          format: '',
+          height: 500,
+          size: 160000,
+          width: 500
+        }
+      },
+      rowSelection = {
+        selectedRowKeys,
+        onChange: this.onSelectChange
     };
 
     return (
@@ -200,7 +207,7 @@ class Chapter extends Component {
                 </Button>
               </Tooltip>
               <Tooltip title={"批量删除章节"}>
-                <Button type="danger" style={{ marginRight: 10 }}>
+                <Button type="danger" style={{ marginRight: 10 }} onClick={this.delMore}>
                   <span>批量删除</span>
                 </Button>
               </Tooltip>
@@ -234,10 +241,13 @@ class Chapter extends Component {
         </div>
 
         <Modal
+          title={"视频预览"}
+          destroyOnClose={true}
           visible={previewVisible}
           footer={null}
           onCancel={this.handleImgModal}>
-          <img alt="example" style={{ width: "100%" }} src={previewImage} />
+          <Player sources={sources} id={"playerId"}
+                  cover={"http://localhost:3000/logo512.png"} duration={3000}/>
         </Modal>
       </div>
     );

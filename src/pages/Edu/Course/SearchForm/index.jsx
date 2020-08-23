@@ -1,49 +1,48 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Input, Select, Cascader, Button } from "antd";
 
+import {reqGetAllSubject, reqGetSubjectChild} from "@api/edu/subject";
+import {reqGetAllTeacherList} from "@api/edu/teacher";
 import "./index.less";
 
 const { Option } = Select;
 
 function SearchForm() {
   const [form] = Form.useForm();
+  const [subjectList, setSubjectList] = useState([])
+  const [teacherList, setTeacherList] = useState([])
+  const [options, setOptions] = useState([]);
 
-  const [options, setOptions] = useState([
-    {
-      value: "zhejiang",
-      label: "Zhejiang",
-      isLeaf: false
-    },
-    {
-      value: "jiangsu",
-      label: "Jiangsu",
-      isLeaf: false
+  useEffect(() => {
+    async function fetchData() {
+      const [subject, teacher] = await Promise.all([reqGetAllSubject(), reqGetAllTeacherList()])
+      const options = subject.map(item => ({value: item._id, label: item.title, isLeaf: false}))
+
+      setOptions(options)
+      setSubjectList(subject)
+      setTeacherList(teacher)
     }
-  ]);
-
+    fetchData()
+  }, [])
   const onChange = (value, selectedOptions) => {
-    console.log(value, selectedOptions);
+
   };
 
-  const loadData = selectedOptions => {
+  const loadData = async selectedOptions => {
     const targetOption = selectedOptions[selectedOptions.length - 1];
     targetOption.loading = true;
 
-    // load options lazily
-    setTimeout(() => {
-      targetOption.loading = false;
-      targetOption.children = [
-        {
-          label: `${targetOption.label} Dynamic 1`,
-          value: "dynamic1"
-        },
-        {
-          label: `${targetOption.label} Dynamic 2`,
-          value: "dynamic2"
-        }
-      ];
-      setOptions([...options]);
-    }, 1000);
+    const res = await reqGetSubjectChild(targetOption.value)
+    targetOption.loading = false
+    if(res.items.length) {
+      targetOption.children = res.items.map(item => (
+        {value: item._id, label: item.title}
+        ))
+    }else {
+      targetOption.isLeaf = true
+    }
+
+    setOptions([...options]);
   };
 
   const resetForm = () => {
@@ -61,9 +60,9 @@ function SearchForm() {
           placeholder="课程讲师"
           style={{ width: 250, marginRight: 20 }}
         >
-          <Option value="lucy1">Lucy1</Option>
-          <Option value="lucy2">Lucy2</Option>
-          <Option value="lucy3">Lucy3</Option>
+          {teacherList.map(item => (
+            <Option key={item._id} value={item._id}>{item.name}</Option>
+          ))}
         </Select>
       </Form.Item>
       <Form.Item name="subject" label="分类">

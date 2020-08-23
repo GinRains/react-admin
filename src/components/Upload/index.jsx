@@ -9,6 +9,9 @@ import {reqGetUploadToken} from '@api/edu/lesson'
 class CustomUpload extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      isShowUpload: true
+    }
 
     const videoToken = localStorage.getItem("VIDEO_TOKEN_KEY")
     if(!videoToken) {
@@ -49,6 +52,9 @@ class CustomUpload extends Component {
         onSuccess(res)
 
         this.props.onChange(`http://qfeie8vm8.hn-bkt.clouddn.com/${res.key}`)
+        this.setState({
+          isShowUpload: false
+        })
       }
     }
     const key = nanoid(10)
@@ -61,6 +67,9 @@ class CustomUpload extends Component {
   }
   handleRemove = () => {
     this.props.onChange("")
+    this.setState({
+      isShowUpload: true
+    })
   }
 
   componentWillUnmount() {
@@ -70,11 +79,16 @@ class CustomUpload extends Component {
   render() {
     return (
       <Upload
+        accept={"video/*"}
         beforeUpload={this.handleBeforeUpload}
         customRequest={this.handlePass} onRemove={this.handleRemove}>
-        <Button>
-          <UploadOutlined /> 点击上传
-        </Button>
+        {
+          this.state.isShowUpload && (
+            <Button>
+              <UploadOutlined /> 点击上传
+            </Button>
+          )
+        }
       </Upload>
     );
   }

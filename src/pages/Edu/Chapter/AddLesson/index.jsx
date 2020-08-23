@@ -22,7 +22,7 @@ class AddLesson extends Component {
       ...values,
       chapterId: this.props.location.state
     }
-    reqAddLesson(data).then(res => {
+      reqAddLesson(data).then(res => {
       message.success("新增课时成功")
       this.props.history.replace("/edu/chapter/list")
     })

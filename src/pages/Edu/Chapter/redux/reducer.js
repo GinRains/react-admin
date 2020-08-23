@@ -1,4 +1,9 @@
-import {GET_ALL_COURSE, GET_CHAPTER_INFO, GET_LESSON_INFO} from './constants'
+import {
+  GET_ALL_COURSE,
+  GET_CHAPTER_INFO,
+  GET_LESSON_INFO,
+  DELETE_MORE_CHAPTER,
+  DELETE_MORE_LESSON} from './constants'
 
 const initChapterInfo = {
   allChapterList: [],
@@ -36,6 +41,42 @@ export default function chapter (prevState = initChapterInfo, action) {
         chapterInfo: {
           total: prevState.chapterInfo.total,
           items: chapter
+        }
+      }
+    case DELETE_MORE_CHAPTER:
+      const chapterIdList = action.idList
+      const {total: chap_total, items: chap_items} = {...prevState.chapterInfo}
+      chap_items.forEach((item, index) => {
+        if(chapterIdList.includes(item._id)) {
+          chap_items.splice(index, 1)
+        }
+      })
+
+      console.log(111, chap_items)
+      return {
+        ...prevState,
+        chapterInfo: {
+          total: chap_total,
+          items: chap_items
+        }
+      }
+    case DELETE_MORE_LESSON:
+      const lessonIdList = action.idList
+      const {total: less_total, items: less_items} = {...prevState.chapterInfo}
+      less_items.forEach(items => {
+        items.children.filter(item => {
+          if(!lessonIdList.includes(item._id)) {
+            return true
+          }
+        })
+      })
+
+      console.log(222, less_items)
+      return {
+        ...prevState,
+        chapterInfo: {
+          total: less_total,
+          items: less_items
         }
       }
     default:

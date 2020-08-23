@@ -1,2 +1,2 @@
 export {default as chapter} from './reducer'
-export {getAllCourse, getChapterInfo, getLessonInfo} from './actions'
+export {getAllCourse, getChapterInfo, getLessonInfo, DelMoreChapter, DelMoreLesson} from './actions'
