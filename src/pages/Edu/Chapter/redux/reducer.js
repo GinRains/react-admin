@@ -52,26 +52,20 @@ export default function chapter (prevState = initChapterInfo, action) {
         }
       })
 
-      console.log(111, chap_items)
       return {
         ...prevState,
         chapterInfo: {
           total: chap_total,
-          items: chap_items
+          items: [...chap_items]
         }
       }
     case DELETE_MORE_LESSON:
       const lessonIdList = action.idList
       const {total: less_total, items: less_items} = {...prevState.chapterInfo}
       less_items.forEach(items => {
-        items.children.filter(item => {
-          if(!lessonIdList.includes(item._id)) {
-            return true
-          }
-        })
+        items.children = items.children.filter(item => !lessonIdList.includes(item._id))
       })
 
-      console.log(222, less_items)
       return {
         ...prevState,
         chapterInfo: {

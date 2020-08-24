@@ -17,6 +17,7 @@ import { logout } from "@redux/actions/login";
 import { resetUser } from "../../components/Authorized/redux";
 import logo from "@assets/images/logo.png";
 import { findPathIndex } from "@utils/tools";
+import {setLang} from '@redux/actions/lang'
 
 // 引入组件公共样式
 import "@assets/css/common.less";
@@ -27,8 +28,10 @@ const { Header, Sider, Content } = Layout;
 @connect(
   (state) => ({
     user: state.user,
+    lang: state.lang
   }),
   {
+    setLang,
     logout,
     resetUser,
   }
@@ -94,7 +97,7 @@ class PrimaryLayout extends Component {
           /*
             path: /acl/role/list
               --> /acl/role
-            pathname: /acl/role/auth/xxx  
+            pathname: /acl/role/auth/xxx
           */
           const index = findPathIndex(path, "/");
           path = path.slice(0, index);
@@ -131,6 +134,10 @@ class PrimaryLayout extends Component {
     );
   };
 
+  changeLangChecked = (options) => {
+    this.props.setLang(options.key)
+  }
+
   render() {
     const { collapsed } = this.state;
     const {
@@ -140,6 +147,12 @@ class PrimaryLayout extends Component {
     } = this.props;
 
     const route = this.selectRoute(routes, pathname);
+    const intlMenu = (
+      <Menu selectedKeys={[this.props.lang]} onClick={this.changeLangChecked}>
+        <Menu.Item key='zh'>中文</Menu.Item>
+        <Menu.Item key='en'>English</Menu.Item>
+      </Menu>
+    )
 
     return (
       <Layout className="layout">
@@ -169,9 +182,11 @@ class PrimaryLayout extends Component {
                     <span>{user.name}</span>
                   </span>
                 </Dropdown>
-                <span className="site-layout-lang">
-                  <GlobalOutlined />
-                </span>
+                <Dropdown overlay={intlMenu}>
+                  <span className="site-layout-lang">
+                    <GlobalOutlined />
+                  </span>
+                </Dropdown>
               </span>
             </span>
           </Header>

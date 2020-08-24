@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { Form, Input, Select, Cascader, Button } from "antd";
+import {connect} from 'react-redux'
+import {FormattedMessage, useIntl} from 'react-intl'
 
 import {reqGetAllSubject, reqGetSubjectChild} from "@api/edu/subject";
 import {reqGetAllTeacherList} from "@api/edu/teacher";
+import {getAllCourseList} from '../redux'
 import "./index.less";
 
 const { Option } = Select;
 
-function SearchForm() {
+function SearchForm(props) {
   const [form] = Form.useForm();
+  const intl = useIntl()
   const [subjectList, setSubjectList] = useState([])
   const [teacherList, setTeacherList] = useState([])
   const [options, setOptions] = useState([]);
@@ -49,44 +53,51 @@ function SearchForm() {
     form.resetFields();
   };
 
+  function onFinish() {
+    props.getAllCourseList()
+  }
+
   return (
-    <Form layout="inline" form={form}>
-      <Form.Item name="title" label="标题">
-        <Input placeholder="课程标题" style={{ width: 250, marginRight: 20 }} />
+    <Form layout="inline" form={form} onFinish={onFinish}>
+      <Form.Item name="title" label={<FormattedMessage id={'title'}/>}>
+        <Input placeholder={intl.formatMessage({
+          id: "subjectTitle"
+        })} style={{ width: 250, marginRight: 20 }} />
       </Form.Item>
-      <Form.Item name="teacherId" label="讲师">
+      <Form.Item name="teacherId" label={<FormattedMessage id={'teacher'}/>}>
         <Select
           allowClear
-          placeholder="课程讲师"
-          style={{ width: 250, marginRight: 20 }}
-        >
+          placeholder={intl.formatMessage({
+            id: "subjectTeacher"
+          })}
+          style={{ width: 250, marginRight: 20 }}>
           {teacherList.map(item => (
             <Option key={item._id} value={item._id}>{item.name}</Option>
           ))}
         </Select>
       </Form.Item>
-      <Form.Item name="subject" label="分类">
+      <Form.Item name="subject" label={<FormattedMessage id={'category'}/>}>
         <Cascader
           style={{ width: 250, marginRight: 20 }}
           options={options}
           loadData={loadData}
           onChange={onChange}
           changeOnSelect
-          placeholder="课程分类"
-        />
+          placeholder={intl.formatMessage({
+            id: "subjectCategory"
+          })}/>
       </Form.Item>
       <Form.Item>
         <Button
           type="primary"
           htmlType="submit"
-          style={{ margin: "0 10px 0 30px" }}
-        >
-          查询
+          style={{ margin: "0 10px 0 30px" }}>
+          <FormattedMessage id={'searchBtn'}/>
         </Button>
-        <Button onClick={resetForm}>重置</Button>
+        <Button onClick={resetForm}><FormattedMessage id={'resetBtn'}/></Button>
       </Form.Item>
     </Form>
   );
 }
 
-export default SearchForm;
+export default connect(null, {getAllCourseList})(SearchForm);

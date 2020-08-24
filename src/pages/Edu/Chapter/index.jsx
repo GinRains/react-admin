@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Player from 'griffith'
+import screenfull from 'screenfull'
 import { Button, message, Tooltip, Modal, Alert, Table } from "antd";
 import {
   FullscreenOutlined,
@@ -211,7 +212,7 @@ class Chapter extends Component {
                   <span>批量删除</span>
                 </Button>
               </Tooltip>
-              <Tooltip title="全屏" className="course-table-btn">
+              <Tooltip title="全屏" className="course-table-btn" onClick={() => {screenfull.toggle()}}>
                 <FullscreenOutlined />
               </Tooltip>
               <Tooltip title="刷新" className="course-table-btn">

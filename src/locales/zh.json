@@ -1,0 +1,11 @@
+{
+  "title": "标题",
+  "subjectTitle": "课程标题",
+  "teacher": "讲师",
+  "subjectTeacher": "课程讲师",
+  "category": "分类",
+  "subjectCategory": "课程分类",
+  "searchBtn": "查询",
+  "resetBtn": "重置",
+  "courseList": "课程数据列表"
+}
