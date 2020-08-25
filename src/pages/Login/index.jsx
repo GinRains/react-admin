@@ -15,7 +15,7 @@ export default function Login() {
           <h1>硅谷教育管理系统</h1>
         </div>
         <div className="login-form">
-          <LoginForm></LoginForm>
+          <LoginForm/>
         </div>
         <div className="login-footer">
           <span>尚硅谷</span>
