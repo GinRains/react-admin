@@ -28,7 +28,6 @@ export default class PrimaryLayout extends Component {
     this.setState({ collapsed })
   }
   render() {
-    console.log(this.props.routes)
     return (
       <Layout className='layout'>
         <Sider

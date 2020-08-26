@@ -1,8 +1,12 @@
-import Login from "@pages/Login";
-import Oauth from '@pages/Login/components/Oauth'
-import NotFound from "@pages/404";
+import React from 'react'
 
-//#region
+const Login = React.lazy(() => import("@pages/Login"))
+const Oauth = React.lazy(() => import("@pages/Login/components/Oauth"))
+const NotFound = React.lazy(() => import("@pages/404"))
+// import Login from "@pages/Login";
+// import Oauth from '@pages/Login/components/Oauth'
+// import NotFound from "@pages/404";
+
 /* export const asyncRoutes = [
 	{
 		path: "/acl",
@@ -189,7 +193,6 @@ import NotFound from "@pages/404";
 		],
 	},
 ]; */
-//#endregion
 
 // 常量路由
 export const constantRoutes = [

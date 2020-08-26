@@ -1,7 +1,9 @@
-import React, { Component } from "react";
+import React, { Component, Suspense } from "react";
 import { Switch, Route } from "react-router-dom";
+import {Spin} from 'antd'
 
 import { constantRoutes } from "@conf/routes";
+import "./index.less"
 
 class PublicLayout extends Component {
   renderRoute = (routes) => {
@@ -18,7 +20,14 @@ class PublicLayout extends Component {
   };
 
   render() {
-    return <Switch>{this.renderRoute(constantRoutes)}</Switch>;
+    return (
+      <Suspense fallback={
+        <div className="example">
+          <Spin />
+        </div>}>
+        <Switch>{this.renderRoute(constantRoutes)}</Switch>
+      </Suspense>
+    );
   }
 }
 
