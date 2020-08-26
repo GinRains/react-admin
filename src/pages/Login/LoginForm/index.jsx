@@ -13,7 +13,7 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
 import {reqGetVerifyCode} from "@api/acl/oath";
-import { login } from "@redux/actions/login";
+import { login, mobileLogin } from "@redux/actions/login";
 import "./index.less";
 
 const { TabPane } = Tabs;
@@ -37,26 +37,38 @@ const validator = (rule, value) => {
   })
 }
 
+// 存储Tab标签页key
+let tabFlag = 'user'
+// 存储自动登录是否选中
+let isChecked = true
 function LoginForm (props) {
+  // 可以看出函数组将只要更新了setState中的数据，整个函数组件都会重新执行
+  // console.log(tabFlag)
   const [form] = Form.useForm()
   let [countDown, setCountDown] = useState(5)
   const [isShowCount, setIsShowCount] = useState(false)
-  const onFinish = ({ username, password }) => {
-    form.validateFields("phone")
-      .then(res => {
-        console.log(res)
-      })
-
-    // props.login(username, password).then((token) => {
-    //   localStorage.setItem("user_token", token);
-    //   props.history.replace("/");
-    // });
-    // .catch(error => {
-    //   notification.error({
-    //     message: "登录失败",
-    //     description: error
-    //   });
-    // });
+  const onFinish = () => {
+    if(tabFlag === 'user') {
+      form.validateFields(["username", "password"])
+        .then(res => {
+          const {username, password} = res
+          props.login(username, password).then((token) => {
+            isChecked && localStorage.setItem("user_token", token);
+            props.history.replace("/");
+          })
+          .catch(() => {});
+        })
+    }else {
+      form.validateFields(["phone", "verify"])
+        .then(res => {
+          const {phone, verify} = res
+          props.mobileLogin(phone, verify).then((token) => {
+            isChecked && localStorage.setItem("user_token", token);
+            props.history.replace("/");
+          })
+            .catch(() => {});
+        })
+    }
   };
   const getVerifyCode = () => {
     // validateFields(["phone"]) 表示只针对 phone 字段校验规则
@@ -77,8 +89,17 @@ function LoginForm (props) {
       })
       .catch(() => {})
   }
+  // tab标签切换时触发
   const onChange = (key) => {
-    console.log(key)
+    tabFlag = key
+  }
+  // 自动登录是否选中
+  const changeCheckbox = (event) => {
+    isChecked = event.target.checked
+  }
+  // git 第三方登录
+  const gitLogin = () => {
+    window.location.href = 'https://github.com/login/oauth/authorize?client_id=ee65c2754273658e517d'
   }
 
   return (
@@ -88,7 +109,6 @@ function LoginForm (props) {
         name="normal_login"
         className="login-form"
         initialValues={{ remember: true }}
-        onFinish={onFinish}
       >
         <Tabs
           defaultActiveKey="user"
@@ -154,7 +174,8 @@ function LoginForm (props) {
                     message: "请输入验证码"
                   },
                   {
-                    pattern: /^\d{6}$/
+                    pattern: /^[\d]{6}$/,
+                    message: "请输入有效的验证码"
                   }
                 ]}>
                   <Input
@@ -174,7 +195,7 @@ function LoginForm (props) {
         <Row justify="space-between">
           <Col span={7}>
             <Form.Item name="remember" valuePropName="checked" noStyle>
-              <Checkbox>自动登陆</Checkbox>
+              <Checkbox onChange={changeCheckbox} checked={isChecked}>自动登陆</Checkbox>
             </Form.Item>
           </Col>
           <Col span={5}>
@@ -184,7 +205,7 @@ function LoginForm (props) {
         <Form.Item>
           <Button
             type="primary"
-            htmlType="submit"
+            onClick={onFinish}
             className="login-form-button"
           >
             登陆
@@ -195,7 +216,7 @@ function LoginForm (props) {
             <Col span={16}>
               <span>
                 其他登陆方式
-                <GithubOutlined className="login-icon" />
+                <GithubOutlined className="login-icon" onClick={gitLogin} />
                 <WechatOutlined className="login-icon" />
                 <QqOutlined className="login-icon" />
               </span>
@@ -210,4 +231,4 @@ function LoginForm (props) {
   );
 }
 
-export default withRouter(connect(null, {login})(LoginForm));
+export default withRouter(connect(null, {login, mobileLogin})(LoginForm));

@@ -1,7 +1,8 @@
 import Login from "@pages/Login";
+import Oauth from '@pages/Login/components/Oauth'
 import NotFound from "@pages/404";
 
-//#region 
+//#region
 /* export const asyncRoutes = [
 	{
 		path: "/acl",
@@ -193,10 +194,15 @@ import NotFound from "@pages/404";
 // 常量路由
 export const constantRoutes = [
 	{
-		path: "/login",
-		component: Login,
-		title: "登录",
-	},
+    path: "/login",
+    component: Login,
+    title: "登录",
+  },
+  {
+    path: "/oauth",
+    component: Oauth,
+    title: "Git授权",
+  },
 	{ path: "*", component: NotFound },
 ];
 

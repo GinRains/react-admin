@@ -12,7 +12,7 @@ export function reqGetVerifyCode(mobile) {
   })
 }
 
-export function reqPhoneLogin({mobile, code}) {
+export function reqMobileLogin(mobile, code) {
   return request({
     url: `${BASE_URL}/mobile`,
     method: "POST",
