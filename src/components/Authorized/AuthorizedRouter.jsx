@@ -13,7 +13,7 @@ export default class AuthorizedRouter extends Component {
   };
 
   renderRoutes = (routes, prefix = "") => {
-    const composeRoutes = routes.reduce((allRoutes, route) => {
+    return routes.reduce((allRoutes, route) => {
       const { children } = route;
       // 过滤level:4的没有组件的菜单
       if (!route.path) return allRoutes;
@@ -49,7 +49,7 @@ export default class AuthorizedRouter extends Component {
 
       return allRoutes;
     }, []);
-    return composeRoutes;
+    // return composeRoutes;
   };
 
   render() {

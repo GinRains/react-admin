@@ -1,2 +1,4 @@
-export {default as user} from './reducer'
-export {getUserInfo, getMenuList} from './actions'
+import user from "./reducers";
+import { getAccessRoutes, getUserInfo, resetUser } from "./actions";
+
+export { getAccessRoutes, user, getUserInfo, resetUser };

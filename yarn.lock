@@ -74,19 +74,6 @@
     "@antv/util" "^2.0.9"
     tslib "^1.10.0"
 
-"@antv/component@^0.5.6":
-  version "0.5.7"
-  resolved "https://registry.yarnpkg.com/@antv/component/-/component-0.5.7.tgz#b658a4e54c5012947abedcc069c922c3e2aebc17"
-  integrity sha512-OFj1fgVIxUFCfIOQA3EG4LeRBSxUdJICmqj605YFDrPuSUh6QITEErMMieN+42PTttqGVVTKhw3NuzGzx/jSBA==
-  dependencies:
-    "@antv/dom-util" "~2.0.1"
-    "@antv/g-base" "~0.4.0"
-    "@antv/matrix-util" "~2.0.4"
-    "@antv/path-util" "~2.0.7"
-    "@antv/scale" "~0.3.1"
-    "@antv/util" "~2.0.0"
-    tslib "^1.10.0"
-
 "@antv/component@^0.6.0", "@antv/component@~0.6.1":
   version "0.6.3"
   resolved "https://registry.yarnpkg.com/@antv/component/-/component-0.6.3.tgz#3bb4cedbe985e831bfb378a9e672a46c0422a5a7"
@@ -94,6 +81,20 @@
   dependencies:
     "@antv/dom-util" "~2.0.1"
     "@antv/g-base" "~0.4.0"
+    "@antv/matrix-util" "^3.1.0-beta.1"
+    "@antv/path-util" "~2.0.7"
+    "@antv/scale" "~0.3.1"
+    "@antv/util" "~2.0.0"
+    fecha "~4.2.0"
+    tslib "^1.10.0"
+
+"@antv/component@^0.7.2":
+  version "0.7.2"
+  resolved "https://registry.yarnpkg.com/@antv/component/-/component-0.7.2.tgz#a470e6378f0326054bbb2be419802d681b9afea9"
+  integrity sha512-l7yc385nf7HesGLJM4D/oqbLqr6TGpHkiR9Oaiurop6HYLGT8JjVSTu1T60xCFmZHM0BDKscjJEJyfH1rRr6yw==
+  dependencies:
+    "@antv/dom-util" "~2.0.1"
+    "@antv/g-base" "~0.5.0"
     "@antv/matrix-util" "^3.1.0-beta.1"
     "@antv/path-util" "~2.0.7"
     "@antv/scale" "~0.3.1"
@@ -160,6 +161,22 @@
     d3-timer "^1.0.9"
     detect-browser "^5.1.0"
 
+"@antv/g-base@~0.5.0":
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/@antv/g-base/-/g-base-0.5.0.tgz#628f784efaa8fda6050d8b20f5ed66853ea431a6"
+  integrity sha512-JGwOYwxFM0ominFJDG/kVm7/DiP8aVzLYbXbokBSBbMawKEdUdvnCNuhzXBoHkcTQhUXRDMRmtnSKNMRTYbY6g==
+  dependencies:
+    "@antv/event-emitter" "^0.1.1"
+    "@antv/g-math" "^0.1.4"
+    "@antv/matrix-util" "^3.1.0-beta.1"
+    "@antv/path-util" "~2.0.5"
+    "@antv/util" "~2.0.0"
+    "@types/d3-timer" "^1.0.9"
+    d3-ease "^1.0.5"
+    d3-interpolate "^1.3.2"
+    d3-timer "^1.0.9"
+    detect-browser "^5.1.0"
+
 "@antv/g-canvas@^0.4.0", "@antv/g-canvas@~0.4.0":
   version "0.4.14"
   resolved "https://registry.yarnpkg.com/@antv/g-canvas/-/g-canvas-0.4.14.tgz#fb97afdc997ad8fdfd07a4104547c46c61a1b28a"
@@ -179,7 +196,7 @@
     "@antv/event-emitter" "~0.1.2"
     d3-ease "^1.0.5"
 
-"@antv/g-math@^0.1.3":
+"@antv/g-math@^0.1.3", "@antv/g-math@^0.1.4":
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/@antv/g-math/-/g-math-0.1.4.tgz#3c61c85ed5f841d9d7852a3a5bb1aeea38e92280"
   integrity sha512-kB3nL6WI+K5bxUBd1U7uvrZVr6K5TXzvfJIFI1o/WjB80gieHty8M6Hrfkg/kztS5FwE/ykoIRmSP3WwzcjyQw==
@@ -202,27 +219,7 @@
   resolved "https://registry.npm.taobao.org/@antv/g2-plugin-slider/download/@antv/g2-plugin-slider-2.1.0.tgz#7f2f5879d33dcfb14dd2b955092ca198ad9152b9"
   integrity sha1-fy9YedM9z7FN0rlVCSyhmK2RUrk=
 
-"@antv/g2@4.0.14":
-  version "4.0.14"
-  resolved "https://registry.yarnpkg.com/@antv/g2/-/g2-4.0.14.tgz#c64818ce42822e748889bd7bc594ecce12bfad7e"
-  integrity sha512-vQ8CbjmsYaeEUT7cWVuxNpoZO1xJFTW3a82V9BgcXauDyj4efFElqz663/SGckuaVoG764Kt9rz3eu14xaN7yA==
-  dependencies:
-    "@antv/adjust" "^0.2.1"
-    "@antv/attr" "^0.3.1"
-    "@antv/color-util" "^2.0.2"
-    "@antv/component" "^0.6.0"
-    "@antv/coord" "^0.3.0"
-    "@antv/event-emitter" "~0.1.0"
-    "@antv/g-base" "^0.4.3"
-    "@antv/g-canvas" "^0.4.0"
-    "@antv/g-svg" "^0.4.0"
-    "@antv/matrix-util" "^3.1.0-beta.1"
-    "@antv/path-util" "^2.0.3"
-    "@antv/scale" "^0.3.1"
-    "@antv/util" "~2.0.5"
-    tslib "^2.0.0"
-
-"@antv/g2@~4.0.9":
+"@antv/g2@4.0.15", "@antv/g2@~4.0.9":
   version "4.0.15"
   resolved "https://registry.yarnpkg.com/@antv/g2/-/g2-4.0.15.tgz#68eeee5befd9f2e654f7655f8d3d2935cdd526b8"
   integrity sha512-KgTpcaHn3hXBLPFbaBYbHk4CGvbMYxw5u4Du15goaHxzejCiCsaTZYCag081DcetwyVgSCv0jgAdlMj+zxxPIA==
@@ -285,15 +282,6 @@
     gl-matrix "^3.3.0"
     tslib "^1.10.0"
 
-"@antv/matrix-util@~2.0.4":
-  version "2.0.7"
-  resolved "https://registry.yarnpkg.com/@antv/matrix-util/-/matrix-util-2.0.7.tgz#a5190599d424c1518a1b5eb3a548271d7e98fc44"
-  integrity sha512-bogifQY8jplWtSTZsPqBOdBlDdkM7IwDqYL8eMYL8OaSyOPCS7l9bnEQjQ9qTAwfCd7wHTuPoCnCpbiR8BYFvQ==
-  dependencies:
-    "@antv/gl-matrix" "^2.7.1"
-    "@antv/util" "^2.0.7"
-    tslib "^1.10.0"
-
 "@antv/path-util@^2.0.3", "@antv/path-util@~2.0.5", "@antv/path-util@~2.0.7":
   version "2.0.8"
   resolved "https://registry.yarnpkg.com/@antv/path-util/-/path-util-2.0.8.tgz#9bc54d2b7198aad988a9cc4a6de9054f26919b84"
@@ -318,7 +306,7 @@
   dependencies:
     tslib "^1.10.0"
 
-"@antv/util@^2.0.5", "@antv/util@^2.0.7", "@antv/util@^2.0.9", "@antv/util@~2.0.0", "@antv/util@~2.0.3", "@antv/util@~2.0.5", "@antv/util@~2.0.7":
+"@antv/util@^2.0.5", "@antv/util@^2.0.9", "@antv/util@~2.0.0", "@antv/util@~2.0.3", "@antv/util@~2.0.5", "@antv/util@~2.0.7":
   version "2.0.9"
   resolved "https://registry.yarnpkg.com/@antv/util/-/util-2.0.9.tgz#bd3e296a392e11fbe2781fde39d8e70ba1c53ed0"
   integrity sha512-JblWzne7msAPDdxkUhEk8zAz0Wd6igKwqymGbvIeyOydGrhBhGjA3nEayFj4IlG+XixCvGFKsCB4yuFS4glRIA==
@@ -2864,18 +2852,18 @@ bindings@^1.5.0:
 
 bizcharts-plugin-slider@^3.0.1:
   version "3.0.1"
-  resolved "https://registry.npm.taobao.org/bizcharts-plugin-slider/download/bizcharts-plugin-slider-3.0.1.tgz?cache=0&sync_timestamp=1578298409603&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fbizcharts-plugin-slider%2Fdownload%2Fbizcharts-plugin-slider-3.0.1.tgz#46fb687efee399cb2b9782ee2e57872cec1d136a"
-  integrity sha1-Rvtofv7jmcsrl4LuLleHLOwdE2o=
+  resolved "https://registry.yarnpkg.com/bizcharts-plugin-slider/-/bizcharts-plugin-slider-3.0.1.tgz#46fb687efee399cb2b9782ee2e57872cec1d136a"
+  integrity sha512-8I53vTf99j7J21wNy0tVIQHyY9RO1xNwhKq5NDFEO5sHC06cjNGBF3/usm6JQ4u/JBjcIBwCtg8cYCpO9IqYRA==
   dependencies:
     "@antv/g2-plugin-slider" "2.1.0"
 
-bizcharts@^4.0.13:
-  version "4.0.13"
-  resolved "https://registry.yarnpkg.com/bizcharts/-/bizcharts-4.0.13.tgz#6dd6fe03ab5d62105aaad55109b8c00699e32489"
-  integrity sha512-qs/fFZ8REr4Wa92FMvnX0FrFzIRbC3BcsqdYPRdnHxu2lbVJkptFSBtxP+D9XpdSzvtFG2Ogguh7he5/BlBmOQ==
+bizcharts@^4.0.14:
+  version "4.0.14"
+  resolved "https://registry.yarnpkg.com/bizcharts/-/bizcharts-4.0.14.tgz#2e431c1fe373d60ffbe3d36ef73a15b6bcc291e8"
+  integrity sha512-qIhlWMMzTpeXuT45ThTWhJCta7pRlPhFDtwVW1yZbx90UHEM+iFkXH2BnMSbrCtA+lHlZipvHISjDyAkbC+cxQ==
   dependencies:
-    "@antv/component" "^0.5.6"
-    "@antv/g2" "4.0.14"
+    "@antv/component" "^0.7.2"
+    "@antv/g2" "4.0.15"
     "@antv/g2plot" "1.1.23"
     "@antv/util" "^2.0.5"
     d3-color "^1.4.1"

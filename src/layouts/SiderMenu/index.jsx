@@ -1,67 +1,58 @@
-import React, { Component } from "react";
-import { Menu } from "antd";
-import { withRouter } from "react-router-dom";
+import React, {Component} from 'react';
+import {connect} from 'react-redux'
+import {withRouter, Link} from 'react-router-dom'
+import {Menu} from "antd";
 
-import createMenus from "./menus";
-import { defaultRoutes } from "@conf/routes";
-import { findPathIndex } from "@utils/tools";
+import icons from '@conf/icons'
+import {defaultRoutes} from '@conf/routes'
+
+const { SubMenu } = Menu
 
 @withRouter
+@connect(state => ({permissionList: state.user.permissionList}))
 class SiderMenu extends Component {
-  state = {
-    openKeys: [],
-    prevOpenKeys: [],
-  };
+  renderMenu = (routes) => {
+    return routes && routes.map(route => {
+      if(route.hidden) return void 0
 
-  static getDerivedStateFromProps(props, state) {
-    const nextPropOpenKey = props.defaultOpenKey;
-    const prevPropOpenKey = state.prevOpenKeys;
-
-    if (prevPropOpenKey[0] !== nextPropOpenKey) {
-      return {
-        openKeys: [nextPropOpenKey],
-        prevOpenKeys: [nextPropOpenKey],
-      };
-    }
-
-    return {
-      openKeys: state.openKeys,
-    };
+      const Icon = icons[route.icon]
+      if(route.children && route.children.length) {
+        return (
+          <SubMenu key={route.path} icon={<Icon />} title={route.name}>
+            {route.children.map(secItem => {
+              if(secItem.hidden) return void 0
+              return (
+                <Menu.Item key={`${route.path}${secItem.path}`}>
+                  <Link to={`${route.path}${secItem.path}`}>{secItem.name}</Link>
+                </Menu.Item>
+              )
+            })}
+          </SubMenu>
+        )
+      }else {
+        return (
+          <Menu.Item key={route.path} icon={<Icon />}>
+            <Link to={route.path}>{route.name}</Link>
+            {/*{route.path === '/' ? <Link to={route.path}>{route.name}</Link> : route.name}*/}
+          </Menu.Item>
+        )
+      }
+    })
   }
 
-  openChange = (openKeys) => {
-    this.setState({
-      openKeys,
-    });
-  };
-
   render() {
-    const { routes, location } = this.props;
-
-    let { pathname } = location;
-    const index = findPathIndex(pathname, "/");
-    if (index) {
-      pathname = pathname.slice(0, index) + "/list";
-    }
-
-    const { openKeys } = this.state;
-
-    const initMenus = createMenus(defaultRoutes);
-    const asyncMenus = createMenus(routes);
-
+    const routeActive = this.props.location.pathname
+    const openKeyArr = routeActive.match(/\/[A-z]+/)
+    const openKey = openKeyArr && openKeyArr[0]
     return (
-      <Menu
-        theme="dark"
-        mode="inline"
-        selectedKeys={[pathname]}
-        openKeys={openKeys}
-        onOpenChange={this.openChange}
-        onSelect={this.select}
-      >
-        {initMenus}
-        {asyncMenus}
-      </Menu>
+      <div>
+        <Menu theme='dark' defaultSelectedKeys={[routeActive]} defaultOpenKeys={[openKey]} mode='inline'>
+          {this.renderMenu(defaultRoutes)}
+          {this.renderMenu(this.props.permissionList)}
+        </Menu>
+      </div>
     );
   }
 }
+
 export default SiderMenu;

@@ -1,21 +1,49 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux'
+import React, { Component } from "react";
+import { connect } from "react-redux";
 
-import {getMenuList, getUserInfo} from './redux'
+import Loading from "../Loading";
+import { getAccessRoutes, getUserInfo } from "./redux";
+import { updateLoading } from "@redux/actions/loading";
 
-@connect(state =>
-  ({user: state.user}),
-  {getMenuList, getUserInfo}
-  )
+@connect(
+  (state) => ({
+    user: state.user,
+    loading: state.loading,
+  }),
+  { getAccessRoutes, getUserInfo, updateLoading }
+)
 class Authorized extends Component {
-  async componentDidMount() {
-    const {getMenuList, getUserInfo} = this.props
+  componentDidMount() {
+    // 发送请求，请求roles和permissionList
+    const {
+      user: { roles, permissionList },
+      getUserInfo,
+      getAccessRoutes,
+      updateLoading,
+    } = this.props;
+    
+    const promises = [];
 
-    await Promise.all([getMenuList(), getUserInfo()])
+    if (!roles.length) {
+      promises.push(getUserInfo());
+    }
+
+    if (!permissionList.length) {
+      promises.push(getAccessRoutes());
+    }
+
+    Promise.all(promises).finally(() => {
+      updateLoading(false);
+    });
   }
 
   render() {
-    return this.props.render(this.props.user.permissionList);
+    const {
+      user: { permissionList },
+      render,
+    } = this.props;
+
+    return <Loading>{render(permissionList)}</Loading>;
   }
 }
 
